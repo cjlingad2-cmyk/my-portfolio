@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CJ | Computer Science Student</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  
+  <style>
+    :root {
+      --bg: #0f0f17;
+      --bg-card: #161b22;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --primary: #58a6ff;
+      --primary-dark: #388bfd;
+      --border: #30363d;
+      --hover: #21262d;
+    }
+
+    [data-theme="light"] {
+      --bg: #ffffff;
+      --bg-card: #f6f8fa;
+      --text: #24292f;
+      --text-muted: #57606a;
+      --primary: #0969da;
+      --primary-dark: #0550ae;
+      --border: #d0d7de;
+      --hover: #f0f2f5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      padding: 80px 0 100px;
+      text-align: center;
+      position: relative;
+    }
+
+    .profile-pic-container {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 25px;
+      position: relative;
+    }
+
+    .profile-pic {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid var(--primary);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 1;
+      transform: rotateY(0deg) scale(1);
+      backface-visibility: hidden;
+    }
+
+    .profile-pic.back {
+      transform: rotateY(180deg);
+      opacity: 0;
+    }
+
+    .profile-pic-container:hover .profile-pic.front {
+      opacity: 0;
+      transform: rotateY(-180deg) scale(0.92);
+    }
+
+    .profile-pic-container:hover .profile-pic.back {
+      opacity: 1;
+      transform: rotateY(0deg) scale(1);
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, var(--primary), #79c0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      background: var(--primary);
+      color: white;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    h2 {
+      font-size: 2.4rem;
+      margin-bottom: 40px;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2:after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 4px;
+      background: var(--primary);
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+
+    .card h3 {
+      color: var(--primary);
+      margin-bottom: 16px;
+      font-size: 1.4rem;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .skill-tag {
+      background: rgba(88, 166, 255, 0.15);
+      color: var(--primary);
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      border: 1px solid rgba(88, 166, 255, 0.3);
+    }
+
+    .social-links {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .social-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(88,166,255,0.3);
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 0 40px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 60px 0 80px; }
+      h1 { font-size: 2.6rem; }
+      .profile-pic-container { width: 150px; height: 150px; }
+    }
+  </style>
+</head>
+<body>
+
+    <audio src="music.mp3" autoplay controls></audio>
+  <div class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="profile-pic-container">
+        <!-- Replace these URLs with your own images -->
+        <img src="front.jpeg" alt="You smiling" class="profile-pic front">
+        <img src="back.jpeg" alt="You serious/coding" class="profile-pic back">
+      </div>
+
+      <h1>Hi, I'm Christian Josh Lingad</h1>
+      <div class="subtitle">2nd Year Computer Science Student</div>
+
+      <div class="social-links">
+        <a href="https://github.com/cjlingad2-cmyk" class="social-btn" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.facebook.com/Christian.lingad07" class="social-btn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://mail.google.com/mail/u/0/#inbox" class="social-btn"><i class="fas fa-envelope"></i></a>
+        <a href="https://twitter.com/yourusername" class="social-btn" target="_blank"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="container">
+      <h2>About Me</h2>
+      <div class="card">
+        <p>I'm a passionate 2nd-year Computer Science student interested in web development, competitive programming, and building useful applications.</p>
+        <p>Currently learning modern JavaScript frameworks, exploring system design concepts, and trying to improve my problem-solving skills through regular coding practice.</p>
+        <p>I enjoy turning ideas into working products and constantly learning new technologies.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <h2>Skills</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Languages</h3>
+          <div class="skills-list">
+            <span class="skill-tag">C / C++</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">TypeScript</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Hobbies</h3>
+          <div class="skills-list">
+            <span class="skill-tag">Guitar</span>
+            <span class="skill-tag">Piano/Keyboard</span>
+            <span class="skill-tag">Guitarist of Sentinels band</span>
+            <span class="skill-tag">Basketball</span>
+            <span class="skill-tag">Music director</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Web Development</h3>
+          <div class="skills-list">
+            <span class="skill-tag">HTML5 • CSS3</span>
+            <span class="skill-tag">React.js</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">Express</span>
+            <span class="skill-tag">Tailwind CSS</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Tools & Others</h3>
+          <div class="skills-list">
+            <span class="skill-tag">Git • GitHub</span>
+            <span class="skill-tag">Linux Basics</span>
+            <span class="skill-tag">VS Code</span>
+            <span class="skill-tag">Figma</span>
+            <span class="skill-tag">DSA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <h2>Projects</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Task Management App</h3>
+          <p>Full-stack to-do & project management application with user authentication, drag & drop, dark mode and real-time updates.</p>
+          <p><strong>Tech:</strong> React, Node.js, Express, MongoDB</p>
+        </div>
+
+        <div class="card">
+          <h3>Sorting Algorithm Visualizer</h3>
+          <p>Interactive web tool to visualize how different sorting algorithms work with animations and statistics.</p>
+          <p><strong>Tech:</strong> React, TypeScript, Framer Motion</p>
+        </div>
+
+        <div class="card">
+          <h3>Personal Finance Tracker</h3>
+          <p>Expense tracker with category wise analysis, charts and export functionality.</p>
+          <p><strong>Tech:</strong> React, Chart.js, LocalStorage</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 Christian Josh Lingad • Built with love and a lot of coffee</p>
+    </div>
+    <div class="container">
+        <p><a href="mailto:cjlingad2@gmail.com">Email Me</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    // Check for saved theme preference or use system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      html.setAttribute('data-theme', savedTheme);
+      updateIcon(savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      html.setAttribute('data-theme', 'dark');
+      updateIcon('dark');
+    }
+
+    toggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateIcon(newTheme);
+    });
+
+    function updateIcon(theme) {
+      toggle.innerHTML = theme === 'dark' 
+        ? '<i class="fas fa-moon"></i>' 
+        : '<i class="fas fa-sun"></i>';
+    }
+  </script>
+
+</body>
+</html>
